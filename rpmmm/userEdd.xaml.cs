@@ -21,32 +21,35 @@ namespace rpmmm
     {
         private users _originalData;
         private int _userId;
-        public userEdd(users dataToEdit)
+        public userEdd(users dataToEdit, int userId)
         {
             InitializeComponent();
             _originalData = dataToEdit;
-            _userId = dataToEdit.Id_user;
-
-
+            _userId = userId; 
+            id.Text = userId.ToString();
             fio.Text = dataToEdit.FIO;
             Passp.Text = dataToEdit.Passport;
             vozr.Text = dataToEdit.age;
             dat.Text = dataToEdit.birthday;
-            
         }
+       
         public users GetEditedData()
         {
-
-            var editedData = new users
+            var editedData = new users();
+            if (int.TryParse(id.Text, out int userId))
             {
-                Id_user = int.Parse(id.Text),
-                FIO = fio.Text,
-                Passport = Passp.Text,
-                age = vozr.Text,
-                birthday = dat.Text,
+                editedData.Id_user = userId;
+            }
+            else
+            {
+                MessageBox.Show("Некорректный формат идентификатора пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
 
-            };
-
+            editedData.FIO = fio.Text;
+            editedData.Passport = Passp.Text;
+            editedData.age = vozr.Text;
+            editedData.birthday = dat.Text;
 
             return editedData;
         }
@@ -58,16 +61,15 @@ namespace rpmmm
                 return;
             }
 
-
             var editedData = GetEditedData();
 
             using (var dbContext = new trpoEntities())
             {
+
                 var existingData = dbContext.users.Find(_userId);
 
                 if (existingData != null)
                 {
-                    existingData.Id_user = editedData.Id_user;
                     existingData.FIO = editedData.FIO;
                     existingData.Passport = editedData.Passport;
                     existingData.age = editedData.age;
@@ -84,12 +86,17 @@ namespace rpmmm
         {
             var editedData = GetEditedData();
 
+            if (editedData == null)
+            {
+                return false;
+            }
+
             return
-                    editedData.Id_user != _originalData.Id_user ||
-                   editedData.FIO != _originalData.FIO ||
-                   editedData.Passport != _originalData.Passport ||
-                   editedData.age != _originalData.age ||
-                   editedData.birthday != _originalData.birthday;
+                editedData.Id_user != _originalData.Id_user ||
+                editedData.FIO != _originalData.FIO ||
+                editedData.Passport != _originalData.Passport ||
+                editedData.age != _originalData.age ||
+                editedData.birthday != _originalData.birthday;
         }
     }
 }

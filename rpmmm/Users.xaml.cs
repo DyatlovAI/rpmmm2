@@ -51,12 +51,12 @@ namespace rpmmm
         private void Button_Click_Edit(object sender, RoutedEventArgs e)
         {
             var selectedData = GetSelectedData();
-            userEdd editWindow = new userEdd(selectedData);
+            userEdd editWindow = new userEdd(selectedData, selectedData.Id_user);
             editWindow.ShowDialog();
             if (editWindow.DialogResult == true)
             {
                 var editedData = editWindow.GetEditedData();
-
+                
             }
         }
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
