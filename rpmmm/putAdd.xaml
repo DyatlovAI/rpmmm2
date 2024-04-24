@@ -9,14 +9,19 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="redact" Height="350" Width="500">
-
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="MaxLength" Value="40"/>
+        </Style>
+    </Window.Resources>
     <Grid Background="White" >
         <Border MinWidth="400" Background="white" Margin="15" VerticalAlignment="Center" Padding="30" MaxWidth="450" CornerRadius="20">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
             </Border.Effect>
             <StackPanel>
-                <TextBox materialDesign:HintAssist.Hint="ФИО" x:Name="fio" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <ComboBox x:Name="fio" materialDesign:HintAssist.Hint="ФИО"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"  Style="{StaticResource MaterialDesignFloatingHintComboBox}"></ComboBox>
+                
                 <TextBox materialDesign:HintAssist.Hint="Страна" x:Name="Passp" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                 <TextBox materialDesign:HintAssist.Hint="Город" x:Name="vozr" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                 <TextBox materialDesign:HintAssist.Hint="Дата" x:Name="dat" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>

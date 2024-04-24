@@ -8,6 +8,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowState="Maximized"
         Title="AvtorizAdmin" Height="1080" Width="1920">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="MaxLength" Value="40"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid Background="#E8F3F2">
             <Border MinWidth="400" Background="white" Margin="15" VerticalAlignment="Center" Padding="30" MaxWidth="450" CornerRadius="20">

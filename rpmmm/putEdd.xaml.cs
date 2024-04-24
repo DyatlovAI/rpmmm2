@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -21,13 +23,15 @@ namespace rpmmm
     {
         private put _originalData;
         private int _userId;
-        public putEdd(put dataToEdit)
+        private int _putId;
+        public putEdd(put dataToEdit,  int putId)
         {
             InitializeComponent();
             _originalData = dataToEdit;
-            _userId = dataToEdit.Id_put;
-
-
+            //_userId = userId;
+            _putId = putId;
+            
+            id.Text = putId.ToString();
             fio.Text = dataToEdit.FIO;
             Passp.Text = dataToEdit.Strana;
             vozr.Text = dataToEdit.City;
@@ -36,21 +40,28 @@ namespace rpmmm
         }
         public put GetEditedData()
         {
-
-            var editedData = new put
+            var editedData = new put();   
+            if (int.TryParse(id.Text, out int putId))
             {
-                Id_put = int.Parse(id.Text),
-                FIO = fio.Text,
-                Strana = Passp.Text,
-                City = vozr.Text,
-                Datta = dat.Text,
-                Price = price.Text,
+               
 
-            };
+                editedData.Id_put = putId;
+                editedData.FIO = fio.Text;
+                editedData.Strana = Passp.Text;
+                editedData.City = vozr.Text;
+                editedData.Datta = dat.Text;
+                editedData.Price = price.Text;
 
+                return editedData;
+            }
+            else
+            {
+                MessageBox.Show("Некорректный формат идентификатора пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+        
+    }
 
-            return editedData;
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -60,12 +71,18 @@ namespace rpmmm
                 return;
             }
 
-
             var editedData = GetEditedData();
+
+            
+            if (!IsValidData(editedData))
+            {
+                MessageBox.Show("Пожалуйста, введите корректные данные.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             using (var dbContext = new trpoEntities())
             {
-                var existingData = dbContext.put.Find(_userId);
+                var existingData = dbContext.put.Find(_putId);
 
                 if (existingData != null)
                 {
@@ -82,7 +99,50 @@ namespace rpmmm
             DialogResult = true;
             Close();
         }
-        private bool IsDataChanged()
+
+        private bool IsValidData(put data)
+        {
+           
+            if (!IsStranaValid(data.Strana))
+                return false;
+
+            if (!IsCityValid(data.City))
+                return false;
+
+            if (!IsDattaValid(data.Datta))
+                return false;
+
+            if (!IsPriceValid(data.Price))
+                return false;
+
+            return true;
+        }
+
+        private bool IsStranaValid(string strana)
+        {
+            
+            return Regex.IsMatch(strana, @"^[а-яА-Я]+$");
+        }
+
+        private bool IsCityValid(string city)
+        {
+            
+            return Regex.IsMatch(city, @"^[а-яА-Я]+$");
+        }
+
+        private bool IsDattaValid(string datta)
+        {
+            
+            return Regex.IsMatch(datta, @"^[0-9-.]+$");
+        }
+
+        private bool IsPriceValid(string price)
+        {
+            
+            return Regex.IsMatch(price, @"^[0-9_]+$");
+        }
+       
+private bool IsDataChanged()
         {
             var editedData = GetEditedData();
 

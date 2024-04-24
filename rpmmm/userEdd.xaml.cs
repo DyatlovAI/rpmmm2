@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +33,24 @@ namespace rpmmm
             vozr.Text = dataToEdit.age;
             dat.Text = dataToEdit.birthday;
         }
-       
+        private void dat_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dat.SelectedDate.HasValue)
+            {
+                DateTime birthdate = dat.SelectedDate.Value;
+                int age = CalculateAge(birthdate);
+                vozr.Text = age.ToString();
+            }
+        }
+
+        private int CalculateAge(DateTime birthdate)
+        {
+            DateTime now = DateTime.Today;
+            int age = now.Year - birthdate.Year;
+            if (birthdate > now.AddYears(-age))
+                age--;
+            return age;
+        }
         public users GetEditedData()
         {
             var editedData = new users();
@@ -63,6 +81,12 @@ namespace rpmmm
 
             var editedData = GetEditedData();
 
+            
+            if (!IsValidData(editedData))
+            {
+                MessageBox.Show("Пожалуйста, введите корректные данные.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             using (var dbContext = new trpoEntities())
             {
 
@@ -82,6 +106,34 @@ namespace rpmmm
             DialogResult = true;
             Close();
         }
+        private bool IsValidData(users data)
+        {
+            
+            if (!IsStranaValid(data.FIO))
+                return false;
+
+            if (!IsCityValid(data.Passport))
+                return false;
+
+            
+
+            return true;
+        }
+
+        private bool IsStranaValid(string FIO)
+        {
+           
+            return Regex.IsMatch(FIO, @"^[а-яА-Я]+$");
+        }
+
+        private bool IsCityValid(string Passport)
+        {
+            
+            return Regex.IsMatch(Passport, @"^[0-9 _ы]+$");
+        }
+
+       
+
         private bool IsDataChanged()
         {
             var editedData = GetEditedData();

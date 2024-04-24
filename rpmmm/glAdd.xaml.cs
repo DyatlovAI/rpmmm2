@@ -87,11 +87,11 @@ namespace rpmmm
 
                     if (!string.IsNullOrEmpty(FIO) && !string.IsNullOrEmpty(Strana))
                     {
-                        // Получаем значения даты и цены из текстовых полей
+                       
                         string datta = date.Text;
                         string priceValue = price.Text;
 
-                        // Создаем новый объект zakaz и заполняем его данными
+                        
                         zakaz newEntity = new zakaz
                         {
                             FIO = FIO,

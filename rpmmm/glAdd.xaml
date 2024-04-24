@@ -21,8 +21,8 @@
                 
 
                 <ComboBox x:Name="second" materialDesign:HintAssist.Hint="Выберите страну"  HorizontalAlignment="Stretch"  VerticalAlignment="Center"   Style="{StaticResource MaterialDesignFloatingHintComboBox}"  />
-                <TextBox materialDesign:HintAssist.Hint="Дата" x:Name="date" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                <TextBox materialDesign:HintAssist.Hint="Цена" x:Name="price" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox materialDesign:HintAssist.Hint="Дата" x:Name="date" Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True"/>
+                <TextBox materialDesign:HintAssist.Hint="Цена" x:Name="price" Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 </StackPanel>
                 <Button  Content="Добавить" HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click" />

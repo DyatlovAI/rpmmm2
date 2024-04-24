@@ -42,7 +42,7 @@ namespace rpmmm
             var selectedData = GetSelectedData();
             if (selectedData is put)
             {
-                putEdd editWindow = new putEdd(selectedData);
+                putEdd editWindow = new putEdd(selectedData, selectedData.Id_put);
                 editWindow.ShowDialog();
                 if (editWindow.DialogResult == true)
                 {
