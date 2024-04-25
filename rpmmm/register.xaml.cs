@@ -96,7 +96,7 @@ namespace rpmmm
                     TName = patronymic,
                     logg = login,
                     pass = password,
-                    email = email // предполагая, что email соответствует реквизитам
+                    email = email 
                 };
 
                 db.Admins.Add(newUser);
